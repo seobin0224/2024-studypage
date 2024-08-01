@@ -1,0 +1,19 @@
+{
+  "name": "2024-studypage",
+  "version": "1.0.0",
+  "description": "[2024 신입부원 웹 기초 프로젝트] 윤서빈",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

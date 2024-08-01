@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Tracker</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="#" id="home-link">Home</a></li>
+        <li><a href="#" id="set-goals-link">Set Study Goals</a></li>
+        <li><a href="#" id="settings-link">Settings</a></li>
+      </ul>
+      <button id="logout-button" class="logout-button">Logout</button>
+    </div>
+    <div class="main-content">
+      <section id="home-section">
+        <h1>Welcome to Study Tracker</h1>
+        <p>This is your personal space to set and track your study goals.</p>
+      </section>
+      <section id="study-goals-section" style="display: none">
+        <h1>Set Study Goal</h1>
+        <form id="goal-form">
+          <label for="subject">Subject:</label>
+          <input type="text" id="subject" required /><br />
+          <label for="week">Week:</label>
+          <select id="week">
+            <option>Week 1</option>
+            <option>Week 2</option>
+            <option>Week 3</option></select
+          ><br />
+          <label for="method">Study Method:</label>
+          <select id="method">
+            <option>Concept Study</option>
+            <option>Practice Problems</option>
+            <option>Revision</option></select
+          ><br />
+          <button type="button" id="set-goal">Set Goal</button>
+        </form>
+        <h2>Your Study Goals</h2>
+        <div id="goal-list"></div>
+      </section>
+      <section id="settings-section" style="display: none">
+        <h1>Settings</h1>
+        <p>Here you can adjust your preferences and settings.</p>
+      </section>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>
