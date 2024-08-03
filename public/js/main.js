@@ -2,61 +2,86 @@ document.addEventListener("DOMContentLoaded", () => {
   const homeLink = document.getElementById("home-link");
   const setGoalsLink = document.getElementById("set-goals-link");
   const settingsLink = document.getElementById("settings-link");
-  const logoutButton = document.getElementById("logout-button");
-  const homeSection = document.getElementById("home-section");
-  const studyGoalsSection = document.getElementById("study-goals-section");
-  const settingsSection = document.getElementById("settings-section");
-  const loginSection = document.getElementById("login-section");
+  const contactLink = document.getElementById("contact-link");
+  const profileLink = document.getElementById("profile-link");
+  const logoutLink = document.getElementById("logout-link");
   const goalList = document.getElementById("goal-list");
+  const setGoalButton = document.getElementById("set-goal");
 
-  homeLink.addEventListener("click", () => {
-    homeSection.style.display = "block";
-    studyGoalsSection.style.display = "none";
-    settingsSection.style.display = "none";
-    loginSection.style.display = "none";
-  });
+  if (homeLink) {
+    homeLink.addEventListener("click", () => {
+      window.location.href = "/";
+    });
+  }
 
-  setGoalsLink.addEventListener("click", () => {
-    homeSection.style.display = "none";
-    studyGoalsSection.style.display = "block";
-    settingsSection.style.display = "none";
-    loginSection.style.display = "none";
-  });
+  if (setGoalsLink) {
+    setGoalsLink.addEventListener("click", () => {
+      window.location.href = "/studygoal";
+    });
+  }
 
-  settingsLink.addEventListener("click", () => {
-    homeSection.style.display = "none";
-    studyGoalsSection.style.display = "none";
-    settingsSection.style.display = "block";
-    loginSection.style.display = "none";
-  });
+  if (settingsLink) {
+    settingsLink.addEventListener("click", () => {
+      alert("Settings section is under construction.");
+    });
+  }
 
-  logoutButton.addEventListener("click", () => {
-    // 로그아웃 시 로그인 화면으로 이동
-    homeSection.style.display = "none";
-    studyGoalsSection.style.display = "none";
-    settingsSection.style.display = "none";
-    loginSection.style.display = "block";
-    goalList.innerHTML = ""; // 목표 목록 초기화 (옵션)
-  });
+  if (contactLink) {
+    contactLink.addEventListener("click", () => {
+      alert("Contact section is under construction.");
+    });
+  }
 
-  document.getElementById("set-goal").addEventListener("click", () => {
-    const subject = document.getElementById("subject").value;
-    const week = document.getElementById("week").value;
-    const method = document.getElementById("method").value;
+  if (profileLink) {
+    profileLink.addEventListener("click", () => {
+      alert("Profile section is under construction.");
+    });
+  }
 
-    const goalItem = document.createElement("div");
-    goalItem.className = "goal-item";
+  if (logoutLink) {
+    logoutLink.addEventListener("click", () => {
+      alert("Login functionality is under construction.");
+    });
+  }
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = `goal-${goalList.children.length + 1}`;
+  if (setGoalButton) {
+    setGoalButton.addEventListener("click", () => {
+      const subject = document.getElementById("subject").value;
+      const week = document.getElementById("week").value;
+      const method = document.getElementById("method").value;
 
-    const label = document.createElement("label");
-    label.htmlFor = checkbox.id;
-    label.textContent = `${subject} - ${week} - ${method}`;
+      if (subject === "" || week === "" || method === "") {
+        alert("Please fill in all fields.");
+        return;
+      }
 
-    goalItem.appendChild(checkbox);
-    goalItem.appendChild(label);
-    goalList.appendChild(goalItem);
-  });
+      const goalItem = document.createElement("li");
+      goalItem.className = "goal-item";
+
+      const goalText = document.createElement("span");
+      goalText.textContent = `${subject} - ${week} - ${method}`;
+
+      const completeButton = document.createElement("button");
+      completeButton.textContent = "Complete";
+      completeButton.className = "complete-goal";
+      completeButton.addEventListener("click", () => {
+        goalText.style.textDecoration = "line-through";
+      });
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.className = "delete-goal";
+      deleteButton.addEventListener("click", () => {
+        goalList.removeChild(goalItem);
+      });
+
+      goalItem.appendChild(goalText);
+      goalItem.appendChild(completeButton);
+      goalItem.appendChild(deleteButton);
+      goalList.appendChild(goalItem);
+
+      // Clear the form fields after adding the goal
+      document.getElementById("goal-form").reset();
+    });
+  }
 });
