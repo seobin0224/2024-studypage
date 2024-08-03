@@ -2,116 +2,321 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.sidebar {
+.header {
   background-color: #333;
-  width: 250px;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.navbar-brand-container {
+  display: flex;
+  flex: 1;
+}
+
+.navbar-brand {
   color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 10px;
 }
 
-.sidebar h2 {
-  margin-top: 0;
+.navbar-links,
+.sidebar-links {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
 }
 
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
+.nav-link {
+  color: white;
+  margin-right: 10px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
-.sidebar ul li {
-  margin: 20px 0;
+.nav-link:hover {
+  color: #ffdd57;
 }
 
-.sidebar ul li a {
+.sidebar-links {
+  justify-content: space-between;
+}
+
+.sidebar-links .nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.nav-item a {
   color: white;
   text-decoration: none;
-  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.nav-item a:hover {
+  color: #ffdd57;
+}
+
+.hero-image {
+  background: url("images/studypic.jpeg") no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  width: 100%;
+}
+
+.hero-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.hero-text {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
 }
 
 .main-content {
-  flex-grow: 1;
+  flex: 1;
   padding: 20px;
   background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* Ensure it takes up most of the viewport height */
 }
 
-#goal-form {
+.form-container {
   background-color: white;
-  padding: 20px;
+  padding: 40px; /* Increased padding for larger form size */
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 600px; /* Fixed width */
+  height: 500px; /* Fixed height */
+  box-sizing: border-box;
+}
+
+.form-group {
+  margin-bottom: 20px; /* Increased margin for better spacing */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  padding: 15px; /* Increased padding for larger input size */
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px; /* Increased font size */
+  padding: 15px; /* Increased padding for larger button size */
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #555;
+}
+
+#goal-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .goal-item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   width: 100%;
-}
-
-.goal-item input[type="checkbox"] {
-  margin-right: 10px;
-  flex: 2; /* 체크박스가 2의 비율로 공간을 차지하도록 설정 */
-}
-
-.goal-item label {
-  margin: 0;
-  text-align: left;
-  flex: 8; /* 레이블이 8의 비율로 공간을 차지하도록 설정 */
-}
-
-.sidebar {
-  background-color: #333;
-  width: 250px;
-  min-height: 100vh;
-  padding: 20px;
+  max-width: 600px;
   box-sizing: border-box;
+}
+
+.goal-item span {
+  flex-grow: 1;
+}
+
+.complete-goal {
+  background-color: #66cc66;
   color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.complete-goal:hover {
+  background-color: #55aa55;
+}
+
+.delete-goal {
+  background-color: #ff6666;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-goal:hover {
+  background-color: #ff4d4d;
+}
+
+.sticky-header {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* 상단 메뉴와 하단 로그아웃 버튼 사이의 공간 확보 */
-}
-
-.logout-button {
-  margin-top: auto; /* 상단 메뉴와의 자동 간격 확보 */
-  padding: 10px;
-  background-color: #444;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center; /* 버튼 텍스트 중앙 정렬 */
-}
-
-.logout-button:hover {
-  background-color: #555;
-}
-
-label {
-  display: block;
-  margin: 10px 0 5px;
-}
-
-input,
-select,
-button {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-button {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  height: 0;
+  overflow: hidden;
   background-color: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  z-index: 1000;
 }
 
-button:hover {
-  background-color: #555;
+@media all and (max-width: 767px) {
+  .sticky-header {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .nav-link {
+    margin: 5px 0;
+    width: 100%;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  .sidebar-links {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .sidebar-links .nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-item {
+    margin-bottom: 0;
+  }
+
+  .nav-item a {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .hero-text {
+    max-width: 90%;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  .goal-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .goal-item input[type="checkbox"] {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .goal-item label {
+    flex: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+  }
+
+  .logout-button {
+    font-size: 14px;
+  }
 }
