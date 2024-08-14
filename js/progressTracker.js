@@ -3,14 +3,14 @@
 function loadProgressTracker() {
   const appContainer = document.getElementById("app");
   appContainer.innerHTML = `
-        <h2 class="text-2xl font-bold mb-4">Progress Tracker</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <canvas id="progressChart"></canvas>
-            </div>
-            <div id="progressList" class="space-y-4"></div>
-        </div>
-    `;
+      <h2 class="text-3xl font-bold mb-6">Progress Tracker</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+              <canvas id="progressChart"></canvas>
+          </div>
+          <div id="progressList" class="space-y-4"></div>
+      </div>
+  `;
 
   renderProgressChart();
   renderProgressList();
@@ -21,11 +21,7 @@ function renderProgressChart() {
   const ctx = document.getElementById("progressChart").getContext("2d");
 
   const data = subjects.map((subject) => {
-    const totalPlans = subject.weeklyPlans.length;
-    const completedPlans = subject.weeklyPlans.filter(
-      (plan) => plan.completed
-    ).length;
-    const progress = totalPlans > 0 ? (completedPlans / totalPlans) * 100 : 0;
+    const progress = calculateProgress(subject.weeklyPlans);
     return {
       label: subject.name,
       data: [progress],
@@ -40,16 +36,27 @@ function renderProgressChart() {
       datasets: data,
     },
     options: {
+      responsive: true,
       scales: {
         y: {
           beginAtZero: true,
           max: 100,
+          title: {
+            display: true,
+            text: "Progress (%)",
+          },
         },
       },
       plugins: {
         title: {
           display: true,
           text: "Subject Progress",
+          font: {
+            size: 18,
+          },
+        },
+        legend: {
+          position: "bottom",
         },
       },
     },
@@ -59,26 +66,33 @@ function renderProgressChart() {
 function renderProgressList() {
   const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
   const progressList = document.getElementById("progressList");
-  progressList.innerHTML = "";
+  progressList.innerHTML =
+    '<h3 class="text-xl font-semibold mb-4">Detailed Progress</h3>';
 
   subjects.forEach((subject) => {
-    const totalPlans = subject.weeklyPlans.length;
-    const completedPlans = subject.weeklyPlans.filter(
-      (plan) => plan.completed
-    ).length;
-    const progress = totalPlans > 0 ? (completedPlans / totalPlans) * 100 : 0;
+    const progress = calculateProgress(subject.weeklyPlans);
 
     const subjectElement = document.createElement("div");
-    subjectElement.className = "border p-4 rounded";
+    subjectElement.className = "bg-white p-4 rounded-lg shadow-md";
     subjectElement.innerHTML = `
-            <h3 class="text-xl font-semibold">${subject.name}</h3>
-            <p>Progress: ${progress.toFixed(2)}%</p>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-2">
-                <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${progress}%"></div>
-            </div>
-        `;
+          <h4 class="text-lg font-semibold mb-2">${subject.name}</h4>
+          <p class="text-text-secondary mb-2">Professor: ${
+            subject.professor
+          }</p>
+          <p class="text-text-secondary mb-2">Semester: ${subject.semester}</p>
+          <p class="font-semibold">Progress: ${progress.toFixed(2)}%</p>
+          <div class="w-full bg-secondary rounded-full h-2.5 mt-2">
+              <div class="bg-primary h-2.5 rounded-full transition-all duration-500 ease-in-out" style="width: ${progress}%"></div>
+          </div>
+      `;
     progressList.appendChild(subjectElement);
   });
+}
+
+function calculateProgress(weeklyPlans) {
+  const totalPlans = weeklyPlans.length;
+  const completedPlans = weeklyPlans.filter((plan) => plan.completed).length;
+  return totalPlans > 0 ? (completedPlans / totalPlans) * 100 : 0;
 }
 
 function getRandomColor() {
