@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-blue-600 text-white p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Study Planner</h1>
+        <nav>
+          <ul class="flex space-x-4">
+            <li>
+              <a href="#" class="hover:text-gray-300" data-page="dashboard"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-300" data-page="subjectPlanner"
+                >Subject Planner</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300"
+                data-page="progressTracker"
+                >Progress Tracker</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-gray-300" data-page="quizGenerator"
+                >Quiz Generator</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="app" class="container mx-auto mt-8 p-4">
+      <!-- Content will be dynamically loaded here -->
+    </main>
+
+    <footer class="bg-gray-200 p-4 mt-8">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 Study Planner. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/subjectPlanner.js"></script>
+    <script src="js/progressTracker.js"></script>
+    <script src="js/quizGenerator.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/utils.js"></script>
+  </body>
+</html>
