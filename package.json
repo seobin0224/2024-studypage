@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "[2024 신입부원 웹 기초 프로젝트] 윤서빈",
   "main": "app.js",
+  "homepage": "https://seobin0224.github.io/2024-studypage/",
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +15,7 @@
     "nodemon": "^3.1.4"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "gh-pages": "^6.1.1"
   }
 }
