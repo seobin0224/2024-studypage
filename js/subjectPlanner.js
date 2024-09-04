@@ -61,22 +61,54 @@ function renderSubjects() {
 
     const addWeeklyPlanButton = subjectElement.querySelector(".addWeeklyPlan");
     addWeeklyPlanButton.addEventListener("click", () =>
-      addWeeklyPlan(subject.id)
+      showWeeklyPlanForm(subject.id)
     );
 
     renderWeeklyPlans(subject, subjectElement.querySelector(".weeklyPlans"));
   });
 }
 
-function addWeeklyPlan(subjectId) {
+// 주차 계획 입력 폼 표시
+function showWeeklyPlanForm(subjectId) {
   const subjects = JSON.parse(localStorage.getItem("subjects"));
   const subject = subjects.find((s) => s.id === subjectId);
 
-  const weekNumber = subject.weeklyPlans.length + 1;
+  const weeklyPlansContainer = document.createElement("div");
+  weeklyPlansContainer.className = "mt-4 space-y-2";
+
+  weeklyPlansContainer.innerHTML = `
+      <h4 class="text-lg font-semibold mb-2">Add Weekly Plan for ${subject.name}</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="number" id="weekNumber" placeholder="Week Number" class="w-full p-2 border border-gray-300 rounded">
+          <input type="text" id="weekContent" placeholder="Week Content" class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <button class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors" id="saveWeeklyPlan">Save Weekly Plan</button>
+  `;
+
+  document
+    .querySelector(`[data-subject-id="${subjectId}"]`)
+    .parentNode.appendChild(weeklyPlansContainer);
+
+  document.getElementById("saveWeeklyPlan").addEventListener("click", () => {
+    const weekNumber = document.getElementById("weekNumber").value;
+    const weekContent = document.getElementById("weekContent").value;
+
+    if (weekNumber && weekContent) {
+      addWeeklyPlan(subjectId, weekNumber, weekContent);
+    } else {
+      alert("Please enter both week number and content");
+    }
+  });
+}
+
+function addWeeklyPlan(subjectId, weekNumber, content) {
+  const subjects = JSON.parse(localStorage.getItem("subjects"));
+  const subject = subjects.find((s) => s.id === subjectId);
+
   const newPlan = {
     id: Date.now(),
     week: weekNumber,
-    content: `Week ${weekNumber} content`,
+    content: content,
     completed: false,
   };
 

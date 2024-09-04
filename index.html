@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Study Planner</title>
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="./css/style.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-secondary font-sans text-text-primary">
@@ -13,7 +13,7 @@
         class="container mx-auto px-4 py-3 flex justify-between items-center"
       >
         <h1 class="text-2xl font-bold">Study Planner</h1>
-        <nav>
+        <nav class="hidden lg:flex">
           <ul class="flex space-x-4">
             <li>
               <a
@@ -49,11 +49,41 @@
             </li>
           </ul>
         </nav>
+        <!-- Mobile Menu Button -->
+        <div class="lg:hidden">
+          <button id="mobileMenuButton" class="text-white">☰</button>
+        </div>
       </div>
     </header>
 
+    <!-- Mobile Menu -->
+    <nav id="mobileMenu" class="hidden bg-primary lg:hidden">
+      <ul class="flex flex-col space-y-2 p-4">
+        <li>
+          <a href="#" data-page="dashboard" class="hover:text-secondary"
+            >Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="#" data-page="subjectPlanner" class="hover:text-secondary"
+            >Subject Planner</a
+          >
+        </li>
+        <li>
+          <a href="#" data-page="progressTracker" class="hover:text-secondary"
+            >Progress Tracker</a
+          >
+        </li>
+        <li>
+          <a href="#" data-page="quizGenerator" class="hover:text-secondary"
+            >Quiz Generator</a
+          >
+        </li>
+      </ul>
+    </nav>
+
     <main id="app" class="container mx-auto px-4 pt-20 pb-8">
-      <!-- Content will be dynamically loaded here -->
+      <!-- Dynamic content will load here -->
     </main>
 
     <footer class="bg-primary text-white py-4 mt-8">
@@ -62,36 +92,20 @@
       </div>
     </footer>
 
-    <!-- Chart.js for data visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Application scripts -->
-    <script src="js/utils.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/subjectPlanner.js"></script>
-    <script src="js/progressTracker.js"></script>
-    <script src="js/quizGenerator.js"></script>
-    <script src="js/app.js"></script>
-
+    <script src="./js/app.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/dashboard.js"></script>
+    <script src="./js/subjectPlanner.js"></script>
+    <script src="./js/progressTracker.js"></script>
+    <script src="./js/quizGenerator.js"></script>
     <script>
-      // Initialize Tailwind CSS configuration
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#4A90E2",
-              secondary: "#F5F5F5",
-              "text-primary": "#333333",
-              "text-secondary": "#666666",
-              "accent-green": "#7ED321",
-              "accent-orange": "#F8A531",
-            },
-            fontFamily: {
-              sans: ["San Francisco", "Roboto", "Noto Sans", "sans-serif"],
-            },
-          },
-        },
-      };
+      // Toggle mobile menu visibility
+      const mobileMenuButton = document.getElementById("mobileMenuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      mobileMenuButton.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
     </script>
   </body>
 </html>
