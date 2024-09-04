@@ -22,23 +22,39 @@ function setupNavigation() {
 function loadPage(page) {
   currentPage = page;
   const appContainer = document.getElementById("app");
-  appContainer.innerHTML = ""; // Clear current content
+  appContainer.innerHTML = ""; // 기존 콘텐츠 삭제
 
   switch (page) {
     case "dashboard":
-      loadDashboard();
+      if (typeof loadDashboard === "function") {
+        loadDashboard();
+      } else {
+        console.error("loadDashboard 함수가 정의되지 않았습니다.");
+      }
       break;
     case "subjectPlanner":
-      loadSubjectPlanner();
+      if (typeof loadSubjectPlanner === "function") {
+        loadSubjectPlanner();
+      } else {
+        console.error("loadSubjectPlanner 함수가 정의되지 않았습니다.");
+      }
       break;
     case "progressTracker":
-      loadProgressTracker();
+      if (typeof loadProgressTracker === "function") {
+        loadProgressTracker();
+      } else {
+        console.error("loadProgressTracker 함수가 정의되지 않았습니다.");
+      }
       break;
     case "quizGenerator":
-      loadQuizGenerator();
+      if (typeof loadQuizGenerator === "function") {
+        loadQuizGenerator();
+      } else {
+        console.error("loadQuizGenerator 함수가 정의되지 않았습니다.");
+      }
       break;
     default:
-      appContainer.innerHTML = "<p>Page not found</p>";
+      appContainer.innerHTML = "<p>해당 페이지를 찾을 수 없습니다.</p>";
   }
 }
 
@@ -47,9 +63,3 @@ function loadData() {
     localStorage.setItem("subjects", JSON.stringify([]));
   }
 }
-
-// These functions will be defined in their respective files
-function loadDashboard() {}
-function loadSubjectPlanner() {}
-function loadProgressTracker() {}
-function loadQuizGenerator() {}
