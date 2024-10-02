@@ -1,11 +1,9 @@
-// enhancedProgressTracker.js
+// progressTracker.js
 
-import Chart from "chart.js/auto";
-
-function loadEnhancedProgressTracker() {
+function loadProgressTracker() {
   const appContainer = document.getElementById("app");
   appContainer.innerHTML = `
-    <h2 class="text-3xl font-bold mb-6">Enhanced Progress Tracker</h2>
+    <h2 class="text-3xl font-bold mb-6">Progress Tracker</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="bg-white p-6 rounded-lg shadow-md">
         <canvas id="subjectProgressChart"></canvas>
@@ -68,8 +66,18 @@ function renderSubjectProgressChart() {
 }
 
 function renderWeeklyStudyTimeChart() {
-  // 주간 학습 시간 데이터를 생성하거나 가져오는 로직이 필요합니다.
-  const weeklyData = [10, 15, 8, 12, 20, 18, 14]; // 예시 데이터
+  const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
+  const weeklyData = Array(7).fill(0); // 7주치 데이터 초기화
+
+  subjects.forEach((subject) => {
+    subject.weeklyPlans.forEach((plan, index) => {
+      if (plan.completed && index < 7) {
+        // 완료된 계획만 카운트
+        weeklyData[index] += 1; // 각 주에 1시간씩 추가 (또는 실제 학습 시간으로 조정)
+      }
+    });
+  });
+
   const ctx = document.getElementById("weeklyStudyTimeChart").getContext("2d");
 
   new Chart(ctx, {
@@ -86,7 +94,7 @@ function renderWeeklyStudyTimeChart() {
       ],
       datasets: [
         {
-          label: "Study Hours",
+          label: "Study Amount",
           data: weeklyData,
           borderColor: "rgb(75, 192, 192)",
           tension: 0.1,
@@ -99,6 +107,15 @@ function renderWeeklyStudyTimeChart() {
         title: {
           display: true,
           text: "Weekly Study Time",
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Number of Completed Plans",
+          },
         },
       },
     },
@@ -160,17 +177,9 @@ function renderOverallProgressTable() {
   });
 }
 
-function calculateProgress(weeklyPlans) {
-  const totalPlans = weeklyPlans.length;
-  const completedPlans = weeklyPlans.filter((plan) => plan.completed).length;
-  return totalPlans > 0 ? (completedPlans / totalPlans) * 100 : 0;
-}
-
 function getProgressStatus(progress) {
   if (progress >= 80) return "Excellent";
   if (progress >= 60) return "Good";
   if (progress >= 40) return "Fair";
   return "Needs Improvement";
 }
-
-export { loadEnhancedProgressTracker };
