@@ -7,12 +7,63 @@ function loadDashboard() {
           <div id="completedSubjects" class="bg-white p-6 rounded-lg shadow-md"></div>
           <div id="overallProgress" class="bg-white p-6 rounded-lg shadow-md"></div>
       </div>
-      <h3 class="text-2xl font-semibold mb-4">Subject Progress</h3>
+      <h3 class="text-3xl font-semibold mt-6 mb-4">Learning Insights</h3>
+      <div id="learningInsights" class="bg-white p-6 rounded-lg shadow-md"></div>
+      <h3 class="text-3xl font-semibold mt-6 mb-4">Subject Progress</h3>
       <div id="subjectList" class="space-y-4"></div>
   `;
 
   updateDashboardStats();
   renderSubjectList();
+  displayLearningInsights();
+}
+
+function displayLearningInsights() {
+  const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
+  const totalSubjects = subjects.length;
+
+  const insights = {
+    mostStudiedSubject: "",
+    averageStudyTime: 0,
+  };
+
+  const studyTimes = [];
+  const progressData = [];
+
+  subjects.forEach((subject) => {
+    const progress = calculateProgress(subject.weeklyPlans);
+    progressData.push({ name: subject.name, progress });
+
+    // 실제 학습 시간을 수집
+    subject.weeklyPlans.forEach((plan) => {
+      studyTimes.push(plan.studyTime); // 각 주차의 학습 시간
+    });
+  });
+
+  // 평균 공부 시간 계산
+  if (studyTimes.length > 0) {
+    insights.averageStudyTime = (
+      studyTimes.reduce((a, b) => a + b, 0) / totalSubjects
+    ).toFixed(2);
+  }
+
+  // 가장 많이 학습한 과목 찾기
+  if (progressData.length > 0) {
+    insights.mostStudiedSubject = progressData.reduce((prev, current) =>
+      prev.progress > current.progress ? prev : current
+    ).name;
+  }
+
+  // 인사이트 표시
+  const insightsContainer = document.getElementById("learningInsights");
+  insightsContainer.innerHTML = `
+    <p class="font-semibold">Most Studied Subject: <span class="text-primary">${
+      insights.mostStudiedSubject || "N/A"
+    }</span></p>
+    <p class="font-semibold">Average Study Time per Subject: <span class="text-primary">${
+      insights.averageStudyTime
+    } hours</span></p>
+  `;
 }
 
 function updateDashboardStats() {

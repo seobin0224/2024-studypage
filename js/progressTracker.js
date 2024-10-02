@@ -71,9 +71,9 @@ function renderWeeklyStudyTimeChart() {
 
   subjects.forEach((subject) => {
     subject.weeklyPlans.forEach((plan, index) => {
-      if (plan.completed && index < 7) {
-        // 완료된 계획만 카운트
-        weeklyData[index] += 1; // 각 주에 1시간씩 추가 (또는 실제 학습 시간으로 조정)
+      if (index < 7) {
+        // 각 주에 공부 시간을 추가
+        weeklyData[index] += plan.studyTime; // 실제 학습 시간으로 업데이트
       }
     });
   });
@@ -114,7 +114,7 @@ function renderWeeklyStudyTimeChart() {
           beginAtZero: true,
           title: {
             display: true,
-            text: "Number of Completed Plans",
+            text: "Study Hours",
           },
         },
       },

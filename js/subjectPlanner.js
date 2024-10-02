@@ -1,5 +1,3 @@
-// subjectPlanner.js
-
 function loadSubjectPlanner() {
   const appContainer = document.getElementById("app");
   appContainer.innerHTML = `
@@ -13,10 +11,20 @@ function loadSubjectPlanner() {
           </div>
           <button id="addSubject" class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Add Subject</button>
       </div>
+      
+      <!-- Filtering by Subject Name -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+          <h3 class="text-xl font-semibold mb-4">Filter Subjects</h3>
+          <input type="text" id="filterSubjectName" placeholder="Filter by Subject Name" class="w-full p-2 border border-gray-300 rounded mb-4">
+      </div>
+      
       <div id="subjectList" class="space-y-4"></div>
   `;
 
   document.getElementById("addSubject").addEventListener("click", addSubject);
+  document
+    .getElementById("filterSubjectName")
+    .addEventListener("input", renderSubjects);
   renderSubjects();
 }
 
@@ -44,10 +52,19 @@ function addSubject() {
 
 function renderSubjects() {
   const subjects = JSON.parse(localStorage.getItem("subjects")) || [];
+  const filterSubjectName = document
+    .getElementById("filterSubjectName")
+    .value.toLowerCase();
+
+  // Filter subjects by subject name
+  const filteredSubjects = subjects.filter((subject) =>
+    subject.name.toLowerCase().includes(filterSubjectName)
+  );
+
   const subjectList = document.getElementById("subjectList");
   subjectList.innerHTML = "";
 
-  subjects.forEach((subject) => {
+  filteredSubjects.forEach((subject) => {
     const subjectElement = document.createElement("div");
     subjectElement.className = "bg-white p-6 rounded-lg shadow-md";
     subjectElement.innerHTML = `
@@ -78,15 +95,6 @@ function renderSubjects() {
   });
 }
 
-// 주제 삭제 기능
-function deleteSubject(subjectId) {
-  let subjects = JSON.parse(localStorage.getItem("subjects"));
-  subjects = subjects.filter((subject) => subject.id !== subjectId);
-  localStorage.setItem("subjects", JSON.stringify(subjects));
-  renderSubjects();
-}
-
-// 주차 계획 입력 폼 표시
 function showWeeklyPlanForm(subjectId) {
   const subjects = JSON.parse(localStorage.getItem("subjects"));
   const subject = subjects.find((s) => s.id === subjectId);
@@ -119,7 +127,6 @@ function showWeeklyPlanForm(subjectId) {
   });
 }
 
-// 주차 계획 추가 기능
 function addWeeklyPlan(subjectId, weekNumber, content) {
   const subjects = JSON.parse(localStorage.getItem("subjects"));
   const subject = subjects.find((s) => s.id === subjectId);
@@ -129,6 +136,7 @@ function addWeeklyPlan(subjectId, weekNumber, content) {
     week: weekNumber,
     content: content,
     completed: false,
+    studyTime: 0, // 추가된 시간 필드
   };
 
   subject.weeklyPlans.push(newPlan);
@@ -136,7 +144,6 @@ function addWeeklyPlan(subjectId, weekNumber, content) {
   renderSubjects();
 }
 
-// 주차 계획 렌더링 및 삭제 버튼 추가
 function renderWeeklyPlans(subject, container) {
   container.innerHTML = "";
   subject.weeklyPlans.forEach((plan) => {
@@ -153,6 +160,11 @@ function renderWeeklyPlans(subject, container) {
               <span class="${
                 plan.completed ? "line-through text-text-secondary" : ""
               }">Week ${plan.week}: ${plan.content}</span>
+              <input type="number" placeholder="Study Time" min="0" class="ml-2 studyTimeInput" data-subject-id="${
+                subject.id
+              }" data-plan-id="${plan.id}" style="width: 80px;" value="${
+      plan.studyTime
+    }" /> hours
           </div>
           <button class="deleteWeeklyPlan bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition-colors" data-plan-id="${
             plan.id
@@ -161,19 +173,38 @@ function renderWeeklyPlans(subject, container) {
     container.appendChild(planElement);
 
     const checkbox = planElement.querySelector(".weeklyPlanCheckbox");
+    const studyTimeInput = planElement.querySelector(".studyTimeInput");
     const deleteWeeklyPlanButton =
       planElement.querySelector(".deleteWeeklyPlan");
 
-    checkbox.addEventListener("change", (e) =>
-      toggleWeeklyPlan(subject.id, plan.id, e.target.checked)
-    );
+    checkbox.addEventListener("change", (e) => {
+      toggleWeeklyPlan(subject.id, plan.id, e.target.checked);
+      if (e.target.checked) {
+        const studyTime = parseFloat(studyTimeInput.value) || 0;
+        updateStudyTime(subject.id, plan.id, studyTime);
+      }
+    });
+
+    studyTimeInput.addEventListener("change", (e) => {
+      const studyTime = parseFloat(e.target.value) || 0;
+      updateStudyTime(subject.id, plan.id, studyTime);
+    });
+
     deleteWeeklyPlanButton.addEventListener("click", () =>
       deleteWeeklyPlan(subject.id, plan.id)
     );
   });
 }
 
-// 주차 계획 삭제 기능
+function updateStudyTime(subjectId, planId, studyTime) {
+  const subjects = JSON.parse(localStorage.getItem("subjects"));
+  const subject = subjects.find((s) => s.id === subjectId);
+  const plan = subject.weeklyPlans.find((p) => p.id === planId);
+  plan.studyTime = studyTime; // 공부 시간을 업데이트
+  localStorage.setItem("subjects", JSON.stringify(subjects));
+  renderSubjects(); // 변경 사항을 반영하여 다시 렌더링
+}
+
 function deleteWeeklyPlan(subjectId, planId) {
   const subjects = JSON.parse(localStorage.getItem("subjects"));
   const subject = subjects.find((s) => s.id === subjectId);
